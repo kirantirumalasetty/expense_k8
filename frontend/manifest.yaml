@@ -24,6 +24,14 @@ spec:
       containers:
       - name: frontend
       image: kirantaws/frontend:v1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        #limit should be greaterthan or equals to request
+        limits:
+          cpu: 100m
+           memory: 128Mi
 ---
 kind: Service
 apiVersion: v1
@@ -41,3 +49,17 @@ spec:
     protocol: TCP
     port: 80
     targetPort: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend
+  namespace: expense
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 15 #usually in real environment it is 75
