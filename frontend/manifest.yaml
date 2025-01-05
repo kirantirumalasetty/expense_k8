@@ -174,10 +174,11 @@ apiVersion: elbv2.k8s.aws/v1beta1
 kind: TargetGroupBinding
 metadata:
   name: frontend
-  #namespace: expense
+  namespace: expense
 spec:
   serviceRef:
     name: frontend # route traffic to the awesome-service
+    namespace: expense
     port: 80
   targetGroupARN: arn:aws:elasticloadbalancing:us-east-1:851725610589:targetgroup/expense-dev/ed28b81318bc8b42
   targetType: ip
